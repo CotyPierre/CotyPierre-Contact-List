@@ -1,0 +1,49 @@
+body {
+    margin-top: 50px;
+}
+
+.image {
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 100px;
+    margin-bottom: 20px;
+    margin-left: 40px;
+}
+
+.image img {
+    display: block;
+   
+}
+
+.contact {
+    display: flex;
+    border: solid 1px grey;
+    margin-bottom: 1px;
+    padding-top: 20px;
+}
+
+.information {
+    margin-right: 500px;
+    width: 300px;
+}
+
+.icons {
+    margin-top: 20px;
+}
+
+.pencil {
+    margin-right: 40px;
+}
+
+
+.addContact {
+    margin-left: 800px;
+    margin-bottom: 40px;
+    background-color: rgb(133, 124, 124);
+    
+}
+
+button {
+    background-color: white;
+    border: none;
+}

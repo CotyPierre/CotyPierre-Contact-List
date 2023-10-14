@@ -1,43 +1,79 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			
+			contacts: [],
+			current_contact: null
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+			createContact: (contact) => {
+				
+				fetch("https://playground.4geeks.com/apis/fake/contact/", {
+					method: "POST",
+					body: JSON.stringify(contact),
+					headers: {
+						"Content-Type": "application/json"
+					}
+				})
+				.then((response) => response.json())
+				.then((data) => console.log(data))
+			},
 
-				//reset the global store
-				setStore({ demo: demo });
+			
+			deleteContact: (indexDelete) => {
+				console.log(indexDelete)
+				let requestOptions = {
+					method: 'DELETE',
+					redirect: 'follow'
+				  };
+				  
+				  fetch("https://playground.4geeks.com/apis/fake/contact/" + indexDelete, requestOptions)
+					.then(response => response.json())
+					.then(result => console.log(result))
+					.then(() => {
+						fetch("https://playground.4geeks.com/apis/fake/contact/agenda/agenda1989")
+						.then((response) => response.json())
+						.then((data) => setStore({ contacts: data}))
+					});
+			},
+
+			updateContact: (indexUpdate, contact) => {
+				let requestOptions = {
+					method: 'PUT',
+					redirect: 'follow',
+					body: JSON.stringify(contact),
+					headers: {
+								"Content-Type": "application/json"
+							}
+						};
+				  
+			 	  fetch("https://playground.4geeks.com/apis/fake/contact/" + indexUpdate, requestOptions)
+					.then(response => response.json())
+					.then(result => console.log(result))
+			 		.then(() => {
+			 			fetch("https://playground.4geeks.com/apis/fake/contact/agenda/agenda1989")
+			 			.then((response) => response.json())
+			 			.then((data) => setStore({ contacts: data}))
+					});
+			 },
+
+
+			loadSomeData: (id) => {
+				let path = ""
+				id ? path="/"+id : path="/agenda/agenda1989"
+			
+				fetch("https://playground.4geeks.com/apis/fake/contact" + path)
+					.then(response => response.json())
+					.then((data) => {
+						console.log(data)
+						id==false ? setStore({contacts:data}) : setStore({current_contact:data})
+					})
+				
+				
+				
 			}
+			
 		}
 	};
 };
